@@ -1,6 +1,7 @@
+import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; 
-
+import 'profilepage.dart';
 
 
 class registerscreen extends StatefulWidget {
@@ -10,7 +11,22 @@ class registerscreen extends StatefulWidget {
   _registerscreenState createState() => _registerscreenState();
 }
 
-Widget buildUsername(){
+
+
+
+class _registerscreenState extends State<registerscreen> {
+  TextEditingController _name = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _ID = TextEditingController();
+  TextEditingController _GPA = TextEditingController();
+  TextEditingController _Gradua = TextEditingController();
+  String? value1;
+  String? value2;
+  String? value3;
+  String? value4;
+  String value = '';
+  
+Widget buildUsername(BuildContext context){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -31,6 +47,7 @@ Widget buildUsername(){
         ),
        height: 60,
        child: TextField(
+         controller: _name,
          keyboardType: TextInputType.emailAddress,
          style: TextStyle(
            color: Colors.black87
@@ -55,7 +72,7 @@ Widget buildUsername(){
   );
 }
 
-Widget buildEmail(){
+Widget buildEmail(BuildContext context){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -76,6 +93,7 @@ Widget buildEmail(){
         ),
        height: 60,
        child: TextField(
+         controller: _email,
          keyboardType: TextInputType.emailAddress,
          style: TextStyle(
            color: Colors.black87
@@ -99,7 +117,7 @@ Widget buildEmail(){
 
   );
 }
-Widget buildID(){
+Widget buildID(BuildContext context){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -120,6 +138,7 @@ Widget buildID(){
         ),
        height: 60,
        child: TextField(
+         controller: _ID,
          keyboardType: TextInputType.number,  
          style: TextStyle(
            color: Colors.black87
@@ -144,7 +163,7 @@ Widget buildID(){
   );
 }
 
-Widget buildGPA(){
+Widget buildGPA(BuildContext context){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -165,6 +184,7 @@ Widget buildGPA(){
         ),
        height: 60,
        child: TextField(
+        controller: _GPA,
         // obscureText: true,
          style: TextStyle(
            color: Colors.black87
@@ -189,7 +209,7 @@ Widget buildGPA(){
   );
 }
 
-Widget buildMobile(){
+Widget buildGradua(BuildContext context){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -210,6 +230,7 @@ Widget buildMobile(){
         ),
        height: 60,
        child: TextField(
+         controller: _Gradua,
          keyboardType: TextInputType.emailAddress,
          style: TextStyle(
            color: Colors.black87
@@ -218,10 +239,11 @@ Widget buildMobile(){
            border: InputBorder.none,
            contentPadding: EdgeInsets.only(top: 14),
            prefixIcon: Icon(
-             Icons.phone,
+             Icons.school,
              color: Color(0xff5ac18e),
            ),
-           hintText: 'Mobile',
+           
+           hintText: 'Graduation from',
            hintStyle: TextStyle(
              color: Colors.black38
            )
@@ -234,14 +256,16 @@ Widget buildMobile(){
   );
 }
 
-
-
-Widget buildRegisterBtn() {
+Widget buildBtn(BuildContext context) {
   return Container(
     padding: EdgeInsets.symmetric(vertical: 25),
     width: double.infinity,
     child: RaisedButton(
-      onPressed: () => print('Register'),
+      onPressed: (){
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage(name: _name.text,
+        email: _email.text, ID: _ID.text,GPA: _GPA.text, Gradua: _Gradua.text,)));
+      },
+     
       padding: EdgeInsets.all(15),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15)
@@ -260,6 +284,8 @@ Widget buildRegisterBtn() {
 
   );
 }
+
+
 
 Widget buildLoginBtn() {
   return GestureDetector(
@@ -289,12 +315,9 @@ Widget buildLoginBtn() {
   );
 }
 
-
-
-class _registerscreenState extends State<registerscreen> {
-
-
   @override
+
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -346,34 +369,176 @@ class _registerscreenState extends State<registerscreen> {
                   
 
                     SizedBox(height: 10),
-                    buildUsername(),
+                    buildUsername(context),
                     SizedBox(height: 10),
-                    buildEmail(),
+                    buildEmail(context),
                     SizedBox(height: 10),
-                    buildID(),
+                    buildID(context),
                     SizedBox(height: 10),
-                    buildGPA(),
+                    
+                    buildGPA(context),
                     SizedBox(height: 10),
-                    DropdownButton<String>(
-  items: <String>['โครงการรับตรงข้อสอบเขียน',
-   'โครงการโควต้าพื้นที่', 
-   'portfolio', 
-   'เรียนดี',
-   'GAT/PAT'].map((String value) {
+                    buildGradua(context),
+                    SizedBox(height: 10),
+                    Text(
+              "เลือกโครงการที่ต้องการสมัคร",
+              style: TextStyle(fontSize: 20, color: Colors.black),
+              ),
+DropdownButton(               
+  items: <String>
+  ['โครงการรับตรงสอบข้อเขียน',
+   'โครงการโควตาพื้นที่',
+    'โครงการ portfolio',
+    'โครงการเรียนดี',
+    'โครงการรับตรงใช้คะแนน GAT/PAT'].map((String value) {
+    return DropdownMenuItem<String>(
+      value: value,
+      child: Text(value,style: TextStyle(color: Colors.black),),
+
+
+    );
+  }).toList(),
+  onChanged: (value1) => {
+  print(value1.toString()), 
+  setState((){
+    value1 = value1; 
+    }),
+  },
+  hint: Text(
+    "Please choose",
+    style: TextStyle(
+      color: Colors.black,
+      fontSize: 14,
+      fontWeight: FontWeight.w500
+    ),
+  ),
+),
+Text(
+              "เลือกสาขาวิชาที่ต้องการสมัครอันดับ 1",
+              style: TextStyle(fontSize: 20, color: Colors.black),
+              ),
+DropdownButton<String>(
+  items: <String>['เลือกอันดับสมัครเรียนสาขาที่ 1',
+   'หลักสูตร 4 ปีรับ ม.6 ปวช.',
+    'สาขาวิชาเทคโนโลยีสารสนเทศ (IT)',
+    'สาขาวิชาวิศวกรรมสารสนเทศและเครือข่าย (INE)',
+    'สาขาวิชาวิศวกรรมอุตสาหการและการจัดการ (IEM)',
+    'สาขาวิชาเทคโนโลยีเครื่องกลและกระบวนการผลิต (MM)',
+    'สาขาวิชาวิศวกรรมเกษตรและอาหาร (AFE)',
+    'สาขาวิชาคอมพิวเตอร์ช่วยออกแบบและบริหารงานก่อสร้าง (CA)',
+    'หลักสูตร ต่อเนื่อง รับ ปวส.',
+    'สาขาวิชาเทคโนโลยีสารสนเทศ (ITI)',
+    'สาขาวิชาวิศวกรรมสารสนเทศและเครือข่าย (INET)',
+    'สาขาวิชาการจัดการอุตสาหกรรม (IMT)',
+    'สาขาวิชาเทคโนโลยีเครื่องกลและกระบวนการผลิต(MMT)',
+    'สาขาวิชาวิศวกรรมเกษตรและอาหาร (AFET)',
+    'สาขาวิชาคอมพิวเตอร์ช่วยออกแบบและบริหารงานก่อสร้าง (CDM)'
+    ].map((String value) {
+    return DropdownMenuItem<String>(
+      value: value,
+      child: Text(value, style: TextStyle(color: Colors.black),),
+    );
+  }).toList(),
+ onChanged: (value2) {
+    setState(() {
+    });
+  },
+  hint: Text(
+    "Please choose",
+    style: TextStyle(
+      color: Colors.black,
+      fontSize: 14,
+      fontWeight: FontWeight.w500
+    ),
+  ),
+),
+Text(
+              "เลือกสาขาวิชาที่ต้องการสมัครอันดับ 2",
+              style: TextStyle(fontSize: 20, color: Colors.black),
+              ),
+DropdownButton<String>(
+  items: <String>['เลือกอันดับสมัครเรียนสาขาที่ 2',
+   'หลักสูตร 4 ปีรับ ม.6 ปวช.',
+    'สาขาวิชาเทคโนโลยีสารสนเทศ (IT)',
+    'สาขาวิชาวิศวกรรมสารสนเทศและเครือข่าย (INE)',
+    'สาขาวิชาวิศวกรรมอุตสาหการและการจัดการ (IEM)',
+    'สาขาวิชาเทคโนโลยีเครื่องกลและกระบวนการผลิต (MM)',
+    'สาขาวิชาวิศวกรรมเกษตรและอาหาร (AFE)',
+    'สาขาวิชาคอมพิวเตอร์ช่วยออกแบบและบริหารงานก่อสร้าง (CA)',
+    'หลักสูตร ต่อเนื่อง รับ ปวส.',
+    'สาขาวิชาเทคโนโลยีสารสนเทศ (ITI)',
+    'สาขาวิชาวิศวกรรมสารสนเทศและเครือข่าย (INET)',
+    'สาขาวิชาการจัดการอุตสาหกรรม (IMT)',
+    'สาขาวิชาเทคโนโลยีเครื่องกลและกระบวนการผลิต(MMT)',
+    'สาขาวิชาวิศวกรรมเกษตรและอาหาร (AFET)',
+    'สาขาวิชาคอมพิวเตอร์ช่วยออกแบบและบริหารงานก่อสร้าง (CDM)'
+    ].map((String value) {
     return DropdownMenuItem<String>(
       value: value,
       child: Text(value),
     );
   }).toList(),
-  onChanged: (_) {},
+  onChanged: (value3) {
+    setState(() {
+    });
+  },
+  hint: Text(
+    "Please choose",
+    style: TextStyle(
+      color: Colors.black,
+      fontSize: 14,
+      fontWeight: FontWeight.w500
+    ),
+  ),
 ),
-                    buildMobile(),
-                    buildRegisterBtn(),
-                    buildLoginBtn(),
+Text(
+              "เลือกสาขาวิชาที่ต้องการสมัครอันดับ 3",
+              style: TextStyle(fontSize: 20, color: Colors.black),
+              ),
+DropdownButton<String>(
+  items: <String>['เลือกอันดับสมัครเรียนสาขาที่ 3',
+   'หลักสูตร 4 ปีรับ ม.6 ปวช.',
+    'สาขาวิชาเทคโนโลยีสารสนเทศ (IT)',
+    'สาขาวิชาวิศวกรรมสารสนเทศและเครือข่าย (INE)',
+    'สาขาวิชาวิศวกรรมอุตสาหการและการจัดการ (IEM)',
+    'สาขาวิชาเทคโนโลยีเครื่องกลและกระบวนการผลิต (MM)',
+    'สาขาวิชาวิศวกรรมเกษตรและอาหาร (AFE)',
+    'สาขาวิชาคอมพิวเตอร์ช่วยออกแบบและบริหารงานก่อสร้าง (CA)',
+    'หลักสูตร ต่อเนื่อง รับ ปวส.',
+    'สาขาวิชาเทคโนโลยีสารสนเทศ (ITI)',
+    'สาขาวิชาวิศวกรรมสารสนเทศและเครือข่าย (INET)',
+    'สาขาวิชาการจัดการอุตสาหกรรม (IMT)',
+    'สาขาวิชาเทคโนโลยีเครื่องกลและกระบวนการผลิต(MMT)',
+    'สาขาวิชาวิศวกรรมเกษตรและอาหาร (AFET)',
+    'สาขาวิชาคอมพิวเตอร์ช่วยออกแบบและบริหารงานก่อสร้าง (CDM)'
+    ].map((String value) {
+    return DropdownMenuItem<String>(
+      value: value,
+      child: Text(value),
+    );
+  }).toList(),
+  onChanged: (value4) {
+    setState(() {
+    });
+  },
+  hint: Text(
+    "Please choose",
+    style: TextStyle(
+      color: Colors.black,
+      fontSize: 14,
+      fontWeight: FontWeight.w500
+    ),
+  ),
+),
+
+
+
+                              buildBtn(context)
                   ],
                 ),
               ),
               )],
+
           ),
         ),
 
@@ -382,3 +547,6 @@ class _registerscreenState extends State<registerscreen> {
     );
   }
 }
+
+
+
