@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
   
 class ProfilePage extends StatelessWidget {
   
-String name, email, ID,GPA,Gradua;
+String name, email, ID,GPA,Gradua , cer ,choose1 ,choose2 ,choose3, choose4 ;
 
   double wh = 0 , total =0;
   ProfilePage(
-      {Key? key, required this.name, required this.email,required this.ID,required this.GPA,required this.Gradua })
+      {Key? key, required this.name, required this.email,required this.ID,required this.GPA,required this.Gradua,required this.cer,
+      required this.choose1,required this.choose2,required this.choose3,required this.choose4 })
       : super(key: key);
      
   @override
@@ -54,17 +55,26 @@ String name, email, ID,GPA,Gradua;
                   elevation: 5,
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
-                    title: Text("emial : "),
-                    subtitle: Text(' $email '),
+                    title: Text("ID : "),
+                    subtitle: Text(' $ID '),
                   ),
                   ),
+                  
                   
                   Card(
                   elevation: 5,
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
-                    title: Text("ID : "),
-                    subtitle: Text(' $ID ') ),
+                    title: Text("Email : "),
+                    subtitle: Text(' $email ') ),
+                  ),
+
+                  Card(
+                  elevation: 5,
+                  margin: const EdgeInsets.all(10),
+                  child: ListTile(
+                    title: Text("วุฒิการศึกษา : "),
+                    subtitle: Text(' $cer ') ),
                   ),
                   
                   Card(
@@ -79,7 +89,7 @@ String name, email, ID,GPA,Gradua;
                   elevation: 5,
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
-                    title: Text("Graduated from "),
+                    title: Text("จบการศึกษาจาก : "),
                     subtitle: Text(' $Gradua ' )
                     ),
                   ),
@@ -88,7 +98,7 @@ String name, email, ID,GPA,Gradua;
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
                     title: Text("โครงการที่สมัคร"),
-                    subtitle: Text('  ' )
+                    subtitle: Text(' $choose1 ' )
                     ),
                   ),
                   Card(
@@ -96,7 +106,7 @@ String name, email, ID,GPA,Gradua;
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
                     title: Text("สาขาที่เลือกอันดับที่ 1"),
-                    subtitle: Text('  ' )
+                    subtitle: Text(' $choose2 ' )
                     ),
                   ),
                   Card(
@@ -104,7 +114,7 @@ String name, email, ID,GPA,Gradua;
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
                     title: Text("สาขาที่เลือกอันดับที่ 2 "),
-                    subtitle: Text('  ' )
+                    subtitle: Text(' $choose3 ' )
                     ),
                   ),
                   Card(
@@ -112,7 +122,7 @@ String name, email, ID,GPA,Gradua;
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
                     title: Text("สาขาที่เลือกอันดับที่ 3 "),
-                    subtitle: Text(' ' )
+                    subtitle: Text(' $choose4 ' )
                     ),
                   ),
                   

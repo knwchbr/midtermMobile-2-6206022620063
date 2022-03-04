@@ -20,11 +20,12 @@ class _registerscreenState extends State<registerscreen> {
   TextEditingController _ID = TextEditingController();
   TextEditingController _GPA = TextEditingController();
   TextEditingController _Gradua = TextEditingController();
-  String? value1;
-  String? value2;
-  String? value3;
-  String? value4;
-  String value = '';
+  TextEditingController _cer = TextEditingController();
+  String _choose1 = '' ;
+  String _choose2 = '';
+  String _choose3 = '';
+  String _choose4 = '';
+  final disableItems = ['หลักสูตร 4 ปีรับ ม.6 ปวช.','หลักสูตร ต่อเนื่อง รับ ปวส.'];
   
 Widget buildUsername(BuildContext context){
   return Column(
@@ -59,7 +60,7 @@ Widget buildUsername(BuildContext context){
              Icons.account_circle,
              color: Color(0xff5ac18e),
            ),
-           hintText: 'Username',
+           hintText: 'ชื่อ - สกุล',
            hintStyle: TextStyle(
              color: Colors.black38
            )
@@ -163,6 +164,54 @@ Widget buildID(BuildContext context){
   );
 }
 
+Widget buildCer(BuildContext context){
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+
+      SizedBox(height: 10),
+      Container(
+        alignment: Alignment.centerLeft,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 6,
+              offset: Offset(0,2)
+            )
+          ]
+        ),
+       height: 60,
+       child: TextField(
+         controller: _cer,
+         keyboardType: TextInputType.emailAddress,
+         style: TextStyle(
+           color: Colors.black87
+         ),
+         decoration: InputDecoration(
+           border: InputBorder.none,
+           contentPadding: EdgeInsets.only(top: 14),
+           prefixIcon: Icon(
+             Icons.school,
+             color: Color(0xff5ac18e),
+           ),
+           
+           hintText: 'วุฒิการศึกษา',
+           hintStyle: TextStyle(
+             color: Colors.black38
+           )
+         ),
+       ), 
+      )
+
+    ],
+
+  );
+}
+
+
 Widget buildGPA(BuildContext context){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,7 +292,7 @@ Widget buildGradua(BuildContext context){
              color: Color(0xff5ac18e),
            ),
            
-           hintText: 'Graduation from',
+           hintText: 'จบการศึกษาจาก',
            hintStyle: TextStyle(
              color: Colors.black38
            )
@@ -263,7 +312,8 @@ Widget buildBtn(BuildContext context) {
     child: RaisedButton(
       onPressed: (){
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage(name: _name.text,
-        email: _email.text, ID: _ID.text,GPA: _GPA.text, Gradua: _Gradua.text,)));
+        email: _email.text, ID: _ID.text,GPA: _GPA.text, Gradua: _Gradua.text, cer : _cer.text,choose1: _choose1, choose2: _choose2, choose3: _choose3,choose4: _choose4
+        )));
       },
      
       padding: EdgeInsets.all(15),
@@ -375,16 +425,17 @@ Widget buildLoginBtn() {
                     SizedBox(height: 10),
                     buildID(context),
                     SizedBox(height: 10),
-                    
+                    buildCer(context),
+                    SizedBox(height: 10),
                     buildGPA(context),
                     SizedBox(height: 10),
                     buildGradua(context),
                     SizedBox(height: 10),
                     Text(
               "เลือกโครงการที่ต้องการสมัคร",
-              style: TextStyle(fontSize: 20, color: Colors.black),
+              style: TextStyle(fontSize: 16, color: Colors.black),
               ),
-DropdownButton(               
+DropdownButtonFormField(               
   items: <String>
   ['โครงการรับตรงสอบข้อเขียน',
    'โครงการโควตาพื้นที่',
@@ -392,32 +443,35 @@ DropdownButton(
     'โครงการเรียนดี',
     'โครงการรับตรงใช้คะแนน GAT/PAT'].map((String value) {
     return DropdownMenuItem<String>(
-      value: value,
-      child: Text(value,style: TextStyle(color: Colors.black),),
-
-
+     value: value,
+      child: Text(value),
+         
     );
   }).toList(),
-  onChanged: (value1) => {
-  print(value1.toString()), 
-  setState((){
-    value1 = value1; 
-    }),
-  },
+  onChanged: (String ?value) {
+                        setState(() {
+                          _choose1 = value!;
+                        });
+                      },
+
   hint: Text(
     "Please choose",
     style: TextStyle(
       color: Colors.black,
       fontSize: 14,
       fontWeight: FontWeight.w500
-    ),
+    ),  
   ),
+  elevation: 16,
+      style: const TextStyle(color: Colors.black),
+    
 ),
+SizedBox(height: 10),
 Text(
               "เลือกสาขาวิชาที่ต้องการสมัครอันดับ 1",
-              style: TextStyle(fontSize: 20, color: Colors.black),
+              style: TextStyle(fontSize: 16, color: Colors.black),
               ),
-DropdownButton<String>(
+DropdownButtonFormField<String>(
   items: <String>['เลือกอันดับสมัครเรียนสาขาที่ 1',
    'หลักสูตร 4 ปีรับ ม.6 ปวช.',
     'สาขาวิชาเทคโนโลยีสารสนเทศ (IT)',
@@ -436,13 +490,15 @@ DropdownButton<String>(
     ].map((String value) {
     return DropdownMenuItem<String>(
       value: value,
-      child: Text(value, style: TextStyle(color: Colors.black),),
+      child: Text(value,style: TextStyle(color: disableItems.contains(value)? Colors.grey : null,),)
     );
   }).toList(),
- onChanged: (value2) {
-    setState(() {
-    });
-  },
+  onChanged: (String ?newValue) {
+                       setState(() {
+                          this._choose2 = newValue!;
+                        });
+                      },
+
   hint: Text(
     "Please choose",
     style: TextStyle(
@@ -451,12 +507,17 @@ DropdownButton<String>(
       fontWeight: FontWeight.w500
     ),
   ),
+  elevation: 16,
+      style: const TextStyle(color: Colors.black),
+      
 ),
+SizedBox(height: 10),
+                  
 Text(
               "เลือกสาขาวิชาที่ต้องการสมัครอันดับ 2",
-              style: TextStyle(fontSize: 20, color: Colors.black),
+              style: TextStyle(fontSize: 16, color: Colors.black),
               ),
-DropdownButton<String>(
+DropdownButtonFormField<String>(
   items: <String>['เลือกอันดับสมัครเรียนสาขาที่ 2',
    'หลักสูตร 4 ปีรับ ม.6 ปวช.',
     'สาขาวิชาเทคโนโลยีสารสนเทศ (IT)',
@@ -475,13 +536,17 @@ DropdownButton<String>(
     ].map((String value) {
     return DropdownMenuItem<String>(
       value: value,
-      child: Text(value),
+      child: Text(value,style: TextStyle(color: disableItems.contains(value)? Colors.grey : null,),)
     );
   }).toList(),
-  onChanged: (value3) {
-    setState(() {
-    });
-  },
+  onChanged: (String ?newValue1) {
+                        setState(() {
+                         this._choose3 = newValue1!;
+                        });
+                      },
+            
+  
+
   hint: Text(
     "Please choose",
     style: TextStyle(
@@ -490,12 +555,17 @@ DropdownButton<String>(
       fontWeight: FontWeight.w500
     ),
   ),
+  elevation: 16,
+      style: const TextStyle(color: Colors.black),
+      
 ),
+
+SizedBox(height: 10),
 Text(
               "เลือกสาขาวิชาที่ต้องการสมัครอันดับ 3",
-              style: TextStyle(fontSize: 20, color: Colors.black),
+              style: TextStyle(fontSize: 16, color: Colors.black),
               ),
-DropdownButton<String>(
+DropdownButtonFormField<String>(
   items: <String>['เลือกอันดับสมัครเรียนสาขาที่ 3',
    'หลักสูตร 4 ปีรับ ม.6 ปวช.',
     'สาขาวิชาเทคโนโลยีสารสนเทศ (IT)',
@@ -514,13 +584,14 @@ DropdownButton<String>(
     ].map((String value) {
     return DropdownMenuItem<String>(
       value: value,
-      child: Text(value),
+      child: Text(value,style: TextStyle(color: disableItems.contains(value)? Colors.grey : null,),)
     );
   }).toList(),
-  onChanged: (value4) {
-    setState(() {
-    });
-  },
+  onChanged: (String ?newValue2) {
+                        setState(() {
+                          _choose4 = newValue2!;
+                       });
+                      },
   hint: Text(
     "Please choose",
     style: TextStyle(
@@ -529,7 +600,11 @@ DropdownButton<String>(
       fontWeight: FontWeight.w500
     ),
   ),
+  elevation: 16,
+      style: const TextStyle(color: Colors.black),
+     
 ),
+
 
 
 
